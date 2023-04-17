@@ -16,17 +16,20 @@ class Area
     private RoomCollection $roomCollection;
     private AreaImageCollection $imageCollection;
     private AreaCategoryCollection $categoryCollection;
+    private string $id;
     private float $square;
 
     public function __construct(
         RoomCollection $roomCollection,
         AreaImageCollection $imageCollection,
         AreaCategoryCollection $categoryCollection,
+        string $id,
         float $square
     ) {
         $this->roomCollection = $roomCollection;
         $this->imageCollection = $imageCollection;
         $this->categoryCollection = $categoryCollection;
+        $this->id = $id;
         $this->square = $square;
     }
 
@@ -43,5 +46,15 @@ class Area
     public function getCategories(): AreaCategoryCollection
     {
         return $this->categoryCollection;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getSquare(): float
+    {
+        return $this->square;
     }
 }

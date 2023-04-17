@@ -14,15 +14,21 @@ class Building
     private AreaCollection $areaCollection;
     private BuildingImageCollection $imageCollection;
     private BuildingCategoryCollection $categoryCollection;
+    private string $id;
+    private float $square;
 
     public function __construct(
         AreaCollection $areaCollection,
         BuildingImageCollection $imageCollection,
-        BuildingCategoryCollection $categoryCollection
+        BuildingCategoryCollection $categoryCollection,
+        string $id,
+        float $square
     ) {
         $this->areaCollection = $areaCollection;
         $this->imageCollection = $imageCollection;
         $this->categoryCollection = $categoryCollection;
+        $this->id = $id;
+        $this->square = $square;
     }
 
     public function getAreas(): AreaCollection
@@ -38,5 +44,15 @@ class Building
     public function getCategories(): BuildingCategoryCollection
     {
         return $this->categoryCollection;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getSquare(): float
+    {
+        return $this->square;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Model\Area;
 
-use App\Category\CategoryCollection;
+use App\Model\Category\CategoryCollection;
 
 class AreaCategoryCollection extends CategoryCollection
 {

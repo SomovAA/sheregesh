@@ -2,7 +2,7 @@
 
 namespace App\Model\Room;
 
-use App\Category\CategoryCollection;
+use App\Model\Category\CategoryCollection;
 
 class RoomCategoryCollection extends CategoryCollection
 {

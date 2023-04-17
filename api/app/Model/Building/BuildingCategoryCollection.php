@@ -2,7 +2,7 @@
 
 namespace App\Model\Building;
 
-use App\Category\CategoryCollection;
+use App\Model\Category\CategoryCollection;
 
 class BuildingCategoryCollection extends CategoryCollection
 {
