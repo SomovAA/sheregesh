@@ -2,10 +2,12 @@
 
 namespace App\Model\Building;
 
-class BuildingCollection
+use App\Model\Collection;
+
+class BuildingCollection extends Collection
 {
     public function add(Building $building)
     {
-
+        $this->data[] = $building;
     }
 }

@@ -2,17 +2,12 @@
 
 namespace App\Model\Room;
 
-class RoomCollection
-{
-    private array $data = [];
+use App\Model\Collection;
 
+class RoomCollection extends Collection
+{
     public function add(Room $room)
     {
         $this->data[] = $room;
-    }
-
-    public function toArray(): array
-    {
-        return $this->data;
     }
 }

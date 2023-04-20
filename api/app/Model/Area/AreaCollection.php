@@ -2,7 +2,9 @@
 
 namespace App\Model\Area;
 
-class AreaCollection
+use App\Model\Collection;
+
+class AreaCollection extends Collection
 {
     public function add(Area $area)
     {

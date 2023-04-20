@@ -18,6 +18,10 @@ class Request
 
     public function getUrl(): string
     {
+        if (strpos($this->server['REQUEST_URI'], '?') === false) {
+            return $this->server['REQUEST_URI'];
+        }
+
         return stristr($this->server['REQUEST_URI'], '?', true);
     }
 

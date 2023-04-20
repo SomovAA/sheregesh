@@ -2,7 +2,9 @@
 
 namespace App\Model\Image;
 
-class ImageCollection
+use App\Model\Collection;
+
+class ImageCollection extends Collection
 {
     public function add(Image $image)
     {

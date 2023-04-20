@@ -2,7 +2,9 @@
 
 namespace App\Model\Category;
 
-class CategoryCollection
+use App\Model\Collection;
+
+class CategoryCollection extends Collection
 {
     public function add(Category $category)
     {
