@@ -21,11 +21,6 @@ class RoomRepository extends AbstractRepository implements RoomRepositoryInterfa
         // TODO: Implement deleteById() method.
     }
 
-    public function save(Room $room)
-    {
-        // TODO: Implement save() method.
-    }
-
     public function getListByAreaId(string $areaId): RoomCollection
     {
         $sql = "SELECT * FROM rooms WHERE area_id = '$areaId'";

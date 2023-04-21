@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Repository\Area\AreaRepository;
+use App\Repository\Area\AreaRepositoryInterface;
 use App\Repository\Building\BuildingRepository;
 use App\Repository\Building\BuildingRepositoryInterface;
 use App\Repository\Room\RoomRepository;
@@ -9,6 +11,7 @@ use App\Repository\Room\RoomRepositoryInterface;
 use PDO;
 use PDOException;
 use ReflectionClass;
+use ReflectionException;
 
 class Container
 {
@@ -32,6 +35,7 @@ class Container
         $this->objects = [
             PDO::class => fn() => $pdo,
             BuildingRepositoryInterface::class => fn() => $this->get(BuildingRepository::class),
+            AreaRepositoryInterface::class => fn() => $this->get(AreaRepository::class),
             RoomRepositoryInterface::class => fn() => $this->get(RoomRepository::class)
         ];
     }
@@ -49,6 +53,9 @@ class Container
                 : $this->prepareObject($id); // "Новый" подход
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function prepareObject(string $class): object
     {
         $classReflector = new ReflectionClass($class);

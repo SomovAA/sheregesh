@@ -18,7 +18,7 @@ class BuildingService
         $this->buildingRepository = $buildingRepository;
     }
 
-    public function create(string $square): void
+    public function create(float $square): void
     {
         $areaCollection = new AreaCollection();
         $buildingImageCollection = new BuildingImageCollection();
@@ -35,7 +35,7 @@ class BuildingService
         $this->buildingRepository->create($building);
     }
 
-    public function update(string $id, string $square): void
+    public function update(string $id, float $square): void
     {
         $areaCollection = new AreaCollection();
         $buildingImageCollection = new BuildingImageCollection();

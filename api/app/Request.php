@@ -25,6 +25,11 @@ class Request
         return stristr($this->server['REQUEST_URI'], '?', true);
     }
 
+    public function compareUrl(string $url)
+    {
+        return $this->getUrl() === $url;
+    }
+
     public function server(string $param)
     {
         return $this->server[$param] ?? null;

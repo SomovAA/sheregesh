@@ -8,6 +8,6 @@ class AreaCollection extends Collection
 {
     public function add(Area $area)
     {
-
+        $this->data[] = $area;
     }
 }

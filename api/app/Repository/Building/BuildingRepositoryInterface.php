@@ -8,8 +8,6 @@ use App\Repository\RepositoryInterface;
 
 interface BuildingRepositoryInterface extends RepositoryInterface
 {
-    public function save(Building $building);
-
     public function create(Building $building): void;
 
     public function getList(): BuildingCollection;

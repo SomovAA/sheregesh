@@ -12,11 +12,6 @@ use PDO;
 
 class BuildingRepository extends AbstractRepository implements BuildingRepositoryInterface
 {
-    public function save(Building $building)
-    {
-        // TODO: Implement save() method.
-    }
-
     public function findById(string $id): Building
     {
         $result = $this->pdo->query("SELECT * FROM buildings WHERE id = '$id' LIMIT 1")->fetch(PDO::FETCH_ASSOC);

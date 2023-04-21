@@ -13,14 +13,14 @@ class BuildingController
     {
         $this->buildingService = $buildingService;
     }
-    public function create(string $square): void
+    public function create(float $square): void
     {
         $this->buildingService->create($square);
 
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([]);
     }
-    public function update(string $id, string $square): void
+    public function update(string $id, float $square): void
     {
         $this->buildingService->update($id, $square);
 
