@@ -61,9 +61,9 @@ if ($request->compareUrl('/api/v1/area/create') && $request->isPost()) {
 
     $areaController->create($square, $buildingId);
 }
-if ($request->compareUrl('/api/v1/area/update') && $request->isGet()) {
-    $id = (string)$request->get('id');
-    $square = (float)$request->get('square');
+if ($request->compareUrl('/api/v1/area/update') && $request->isPost()) {
+    $id = (string)$request->post('id');
+    $square = (float)$request->post('square');
 
     /** @var AreaController $areaController */
     $areaController = $container->get(AreaController::class);
@@ -96,12 +96,47 @@ if ($request->compareUrl('/api/v1/area/list') && $request->isGet()) {
 }
 
 
-if ($request->compareUrl('/api/v1/room/list') && $request->isGet()) {
-    /** @var RoomController $RoomController */
-    $RoomController = $container->get(RoomController::class);
+if ($request->compareUrl('/api/v1/room/create') && $request->isPost()) {
+    $areaId = (string)$request->post('area_id');
+    $square = (float)$request->post('square');
 
-    $areaId = 'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a12';
-    $RoomController->list($areaId);
+    /** @var RoomController $roomController */
+    $roomController = $container->get(RoomController::class);
+
+    $roomController->create($square, $areaId);
+}
+if ($request->compareUrl('/api/v1/room/update') && $request->isPost()) {
+    $id = (string)$request->post('id');
+    $square = (float)$request->post('square');
+
+    /** @var RoomController $roomController */
+    $roomController = $container->get(RoomController::class);
+
+    $roomController->update($id, $square);
+}
+if ($request->compareUrl('/api/v1/room/view') && $request->isGet()) {
+    $id = (string)$request->get('id');
+
+    /** @var RoomController $roomController */
+    $roomController = $container->get(RoomController::class);
+
+    $roomController->view($id);
+}
+if ($request->compareUrl('/api/v1/room/delete') && $request->isPost()) {
+    $id = (string)$request->post('id');
+
+    /** @var RoomController $roomController */
+    $roomController = $container->get(RoomController::class);
+
+    $roomController->delete($id);
+}
+if ($request->compareUrl('/api/v1/room/list') && $request->isGet()) {
+    $areaId = (string)$request->get('area_id');
+
+    /** @var RoomController $roomController */
+    $roomController = $container->get(RoomController::class);
+
+    $roomController->list($areaId);
 }
 
 echo '<pre>';

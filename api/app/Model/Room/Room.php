@@ -13,17 +13,20 @@ class Room
     private RoomCategoryCollection $categoryCollection;
     private string $id;
     private float $square;
+    private string $areaId;
 
     public function __construct(
         RoomImageCollection $imageCollection,
         RoomCategoryCollection $categoryCollection,
         string $id,
-        float $square
+        float $square,
+        string $areaId
     ) {
         $this->imageCollection = $imageCollection;
         $this->categoryCollection = $categoryCollection;
         $this->id = $id;
         $this->square = $square;
+        $this->areaId = $areaId;
     }
 
     public function getImages(): RoomImageCollection
@@ -44,5 +47,10 @@ class Room
     public function getSquare(): float
     {
         return $this->square;
+    }
+
+    public function getAreaId(): string
+    {
+        return $this->areaId;
     }
 }

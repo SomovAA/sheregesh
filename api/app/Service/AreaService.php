@@ -44,12 +44,12 @@ class AreaService
 
     public function update(string $id, float $square): void
     {
+        /** @var Area $area */
+        $area = $this->areaRepository->findById($id);
+
         $roomCollection = new RoomCollection();
         $areaImageCollection = new AreaImageCollection();
         $areaCategoryCollection = new AreaCategoryCollection();
-
-        /** @var Area $area */
-        $area = $this->areaRepository->findById($id);
 
         $area = new Area(
             $roomCollection,
