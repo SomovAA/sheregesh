@@ -8,6 +8,6 @@ class CategoryCollection extends Collection
 {
     public function add(Category $category)
     {
-
+        $this->data[] = $category;
     }
 }

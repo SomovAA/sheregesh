@@ -7,5 +7,4 @@ use App\Repository\RepositoryInterface;
 
 interface ImageRepositoryInterface extends RepositoryInterface
 {
-    public function save(Image $image);
 }

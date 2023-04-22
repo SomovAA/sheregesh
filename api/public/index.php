@@ -3,6 +3,7 @@
 use App\Container;
 use App\Controller\AreaController;
 use App\Controller\BuildingController;
+use App\Controller\CategoryController;
 use App\Controller\RoomController;
 use App\Request;
 
@@ -11,7 +12,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $request = new Request($_SERVER, $_REQUEST, $_GET, $_POST);
 $container = new Container();
 
-if ($request->compareUrl('/api/v1/building/create') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/building/create') && $request->isPost()) {
     $square = (float)$request->post('square');
 
     /** @var BuildingController $buildingController */
@@ -19,7 +20,7 @@ if ($request->compareUrl('/api/v1/building/create') && $request->isPost()) {
 
     $buildingController->create($square);
 }
-if ($request->compareUrl('/api/v1/building/view') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/building/view') && $request->isGet()) {
     $id = (string)$request->get('id');
 
     /** @var BuildingController $buildingController */
@@ -27,7 +28,7 @@ if ($request->compareUrl('/api/v1/building/view') && $request->isGet()) {
 
     $buildingController->view($id);
 }
-if ($request->compareUrl('/api/v1/building/update') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/building/update') && $request->isPost()) {
     $id = (string)$request->post('id');
     $square = (float)$request->post('square');
 
@@ -36,7 +37,7 @@ if ($request->compareUrl('/api/v1/building/update') && $request->isPost()) {
 
     $buildingController->update($id, $square);
 }
-if ($request->compareUrl('/api/v1/building/delete') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/building/delete') && $request->isPost()) {
     $id = (string)$request->post('id');
 
     /** @var BuildingController $buildingController */
@@ -44,7 +45,7 @@ if ($request->compareUrl('/api/v1/building/delete') && $request->isPost()) {
 
     $buildingController->delete($id);
 }
-if ($request->compareUrl('/api/v1/building/list') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/building/list') && $request->isGet()) {
     /** @var BuildingController $buildingController */
     $buildingController = $container->get(BuildingController::class);
 
@@ -52,7 +53,7 @@ if ($request->compareUrl('/api/v1/building/list') && $request->isGet()) {
 }
 
 
-if ($request->compareUrl('/api/v1/area/create') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/area/create') && $request->isPost()) {
     $buildingId = (string)$request->post('building_id');
     $square = (float)$request->post('square');
 
@@ -61,7 +62,7 @@ if ($request->compareUrl('/api/v1/area/create') && $request->isPost()) {
 
     $areaController->create($square, $buildingId);
 }
-if ($request->compareUrl('/api/v1/area/update') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/area/update') && $request->isPost()) {
     $id = (string)$request->post('id');
     $square = (float)$request->post('square');
 
@@ -70,7 +71,7 @@ if ($request->compareUrl('/api/v1/area/update') && $request->isPost()) {
 
     $areaController->update($id, $square);
 }
-if ($request->compareUrl('/api/v1/area/view') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/area/view') && $request->isGet()) {
     $id = (string)$request->get('id');
 
     /** @var AreaController $areaController */
@@ -78,7 +79,7 @@ if ($request->compareUrl('/api/v1/area/view') && $request->isGet()) {
 
     $areaController->view($id);
 }
-if ($request->compareUrl('/api/v1/area/delete') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/area/delete') && $request->isPost()) {
     $id = (string)$request->post('id');
 
     /** @var AreaController $areaController */
@@ -86,7 +87,7 @@ if ($request->compareUrl('/api/v1/area/delete') && $request->isPost()) {
 
     $areaController->delete($id);
 }
-if ($request->compareUrl('/api/v1/area/list') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/area/list') && $request->isGet()) {
     $buildingId = (string)$request->get('building_id');
 
     /** @var AreaController $areaController */
@@ -96,7 +97,7 @@ if ($request->compareUrl('/api/v1/area/list') && $request->isGet()) {
 }
 
 
-if ($request->compareUrl('/api/v1/room/create') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/room/create') && $request->isPost()) {
     $areaId = (string)$request->post('area_id');
     $square = (float)$request->post('square');
 
@@ -105,7 +106,7 @@ if ($request->compareUrl('/api/v1/room/create') && $request->isPost()) {
 
     $roomController->create($square, $areaId);
 }
-if ($request->compareUrl('/api/v1/room/update') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/room/update') && $request->isPost()) {
     $id = (string)$request->post('id');
     $square = (float)$request->post('square');
 
@@ -114,7 +115,7 @@ if ($request->compareUrl('/api/v1/room/update') && $request->isPost()) {
 
     $roomController->update($id, $square);
 }
-if ($request->compareUrl('/api/v1/room/view') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/room/view') && $request->isGet()) {
     $id = (string)$request->get('id');
 
     /** @var RoomController $roomController */
@@ -122,7 +123,7 @@ if ($request->compareUrl('/api/v1/room/view') && $request->isGet()) {
 
     $roomController->view($id);
 }
-if ($request->compareUrl('/api/v1/room/delete') && $request->isPost()) {
+if ($request->compareUrl('/api/v1/admin/room/delete') && $request->isPost()) {
     $id = (string)$request->post('id');
 
     /** @var RoomController $roomController */
@@ -130,7 +131,7 @@ if ($request->compareUrl('/api/v1/room/delete') && $request->isPost()) {
 
     $roomController->delete($id);
 }
-if ($request->compareUrl('/api/v1/room/list') && $request->isGet()) {
+if ($request->compareUrl('/api/v1/admin/room/list') && $request->isGet()) {
     $areaId = (string)$request->get('area_id');
 
     /** @var RoomController $roomController */
@@ -138,6 +139,52 @@ if ($request->compareUrl('/api/v1/room/list') && $request->isGet()) {
 
     $roomController->list($areaId);
 }
+
+
+if ($request->compareUrl('/api/v1/admin/category/create') && $request->isPost()) {
+    $name = (string)$request->post('square');
+
+    /** @var CategoryController $categoryController */
+    $categoryController = $container->get(CategoryController::class);
+
+    $categoryController->create($name);
+}
+if ($request->compareUrl('/api/v1/admin/category/view') && $request->isGet()) {
+    $id = (string)$request->get('id');
+
+    /** @var CategoryController $categoryController */
+    $categoryController = $container->get(CategoryController::class);
+
+    $categoryController->view($id);
+}
+if ($request->compareUrl('/api/v1/admin/category/update') && $request->isPost()) {
+    $id = (string)$request->post('id');
+    $name = (string)$request->post('name');
+
+    /** @var CategoryController $categoryController */
+    $categoryController = $container->get(CategoryController::class);
+
+    $categoryController->update($id, $name);
+}
+if ($request->compareUrl('/api/v1/admin/category/delete') && $request->isPost()) {
+    $id = (string)$request->post('id');
+
+    /** @var CategoryController $categoryController */
+    $categoryController = $container->get(CategoryController::class);
+
+    $categoryController->delete($id);
+}
+if ($request->compareUrl('/api/v1/admin/category/list') && $request->isGet()) {
+    /** @var CategoryController $categoryController */
+    $categoryController = $container->get(CategoryController::class);
+
+    $categoryController->list();
+}
+//1. генератор api
+//2. админка для работы с категориями
+//3. админка для работы с картинками
+//4. бронирование
+//4.1 календарь
 
 echo '<pre>';
 print_r($_SERVER);

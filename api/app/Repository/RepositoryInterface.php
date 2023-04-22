@@ -6,7 +6,7 @@ interface RepositoryInterface
 {
     public function nextIdentity(): string;
 
-    public function findById(string $id);
+    public function findById(string $id): object;
 
     public function deleteById(string $id): void;
 }
