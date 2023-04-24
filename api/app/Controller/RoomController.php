@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\Model\Room\Room;
-use App\Model\Room\RoomCollection;
 use App\Service\RoomService;
 
-class RoomController
+class RoomController extends AbstractController
 {
     private RoomService $roomService;
 
@@ -19,16 +18,14 @@ class RoomController
     {
         $this->roomService->create($square, $areaId);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function update(string $id, float $square): void
     {
         $this->roomService->update($id, $square);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function view(string $id): void
@@ -41,16 +38,14 @@ class RoomController
             'area_id' => $area->getAreaId()
         ];
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 
     public function delete(string $id): void
     {
         $this->roomService->delete($id);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function list(string $areaId): void
@@ -66,7 +61,6 @@ class RoomController
             ];
         }
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 }

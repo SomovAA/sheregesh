@@ -16,6 +16,8 @@ class BuildingCategoryService
 
     public function join(array $categories, string $buildingId): void
     {
+        $this->buildingCategoryRepository->deleteAllByBuildingId($buildingId);
+
         foreach ($categories as $data) {
             $id = $this->buildingCategoryRepository->nextIdentity();
 

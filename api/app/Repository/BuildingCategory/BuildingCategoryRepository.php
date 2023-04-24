@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repository\BuildingCategory;
+
 use App\Model\BuildingCategory\BuildingCategory;
 use App\Repository\AbstractRepository;
 
@@ -8,12 +9,12 @@ class BuildingCategoryRepository extends AbstractRepository implements BuildingC
 {
     public function findById(string $id): BuildingCategory
     {
-        return new BuildingCategory('1',1,'1','1');
+        return new BuildingCategory('1', 1, '1', '1');
     }
 
     public function deleteById(string $id): void
     {
-        // TODO: Implement deleteById() method.
+        $this->pdo->query("DELETE FROM building_category WHERE id = '$id'");
     }
 
     public function create(BuildingCategory $buildingCategory): void
@@ -24,5 +25,10 @@ class BuildingCategoryRepository extends AbstractRepository implements BuildingC
         $categoryId = $buildingCategory->getCategoryId();
 
         $this->pdo->query("INSERT INTO building_category (id,count,building_id,category_id) VALUES('$id',$count,'$buildingId','$categoryId')");
+    }
+
+    public function deleteAllByBuildingId(string $buildingId): void
+    {
+        $this->pdo->query("DELETE FROM building_category WHERE building_id = '$buildingId'");
     }
 }

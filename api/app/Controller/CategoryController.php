@@ -5,9 +5,8 @@ namespace App\Controller;
 use App\Model\Category\Category;
 use App\Service\CategoryService;
 
-class CategoryController
+class CategoryController extends AbstractController
 {
-
     private CategoryService $categoryService;
 
     public function __construct(CategoryService $categoryService)
@@ -19,24 +18,21 @@ class CategoryController
     {
         $this->categoryService->create($name);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function update(string $id, float $name): void
     {
         $this->categoryService->update($id, $name);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function delete(string $id): void
     {
         $this->categoryService->delete($id);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function view(string $id): void
@@ -48,8 +44,7 @@ class CategoryController
             'name' => $category->getName()
         ];
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 
     public function list(): void
@@ -65,7 +60,6 @@ class CategoryController
             ];
         }
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 }

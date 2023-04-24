@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Model\Area\Area;
 use App\Service\AreaService;
 
-class AreaController
+class AreaController extends AbstractController
 {
     private AreaService $areaService;
     public function __construct(AreaService $areaService)
@@ -16,16 +16,14 @@ class AreaController
     {
         $this->areaService->create($square, $buildingId);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function update(string $id, float $square): void
     {
         $this->areaService->update($id, $square);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function view(string $id): void
@@ -38,16 +36,14 @@ class AreaController
             'building_id' => $area->getBuildingId()
         ];
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 
     public function delete(string $id): void
     {
         $this->areaService->delete($id);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function list(string $buildingId): void
@@ -63,7 +59,6 @@ class AreaController
             ];
         }
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 }

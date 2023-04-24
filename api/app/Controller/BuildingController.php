@@ -6,7 +6,7 @@ use App\Model\Building\Building;
 use App\Model\Category\Category;
 use App\Service\BuildingService;
 
-class BuildingController
+class BuildingController extends AbstractController
 {
     private BuildingService $buildingService;
 
@@ -19,16 +19,14 @@ class BuildingController
     {
         $this->buildingService->create($square);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function update(string $id, float $square): void
     {
         $this->buildingService->update($id, $square);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function view(string $id): void
@@ -37,16 +35,14 @@ class BuildingController
 
         $data = $this->getBuilding($building);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 
     public function delete(string $id): void
     {
         $this->buildingService->delete($id);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([]);
+        $this->displayJson();
     }
 
     public function list(): void
@@ -59,8 +55,7 @@ class BuildingController
             $data[] = $this->getBuilding($building);
         }
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($data);
+        $this->displayJson($data);
     }
 
     private function getBuilding(Building $building): array

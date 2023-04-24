@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Service\BuildingCategoryService;
 
-class BuildingCategoryController
+class BuildingCategoryController extends AbstractController
 {
     private BuildingCategoryService $buildingCategoryService;
 
@@ -16,5 +16,7 @@ class BuildingCategoryController
     public function join(array $categories, string $buildingId): void
     {
         $this->buildingCategoryService->join($categories, $buildingId);
+
+        $this->displayJson();
     }
 }
