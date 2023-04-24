@@ -7,6 +7,7 @@ use App\Model\Building\Building;
 use App\Model\Building\BuildingCategoryCollection;
 use App\Model\Building\BuildingCollection;
 use App\Model\Building\BuildingImageCollection;
+use App\Model\Category\Category;
 use App\Repository\AbstractRepository;
 use PDO;
 
@@ -14,19 +15,15 @@ class BuildingRepository extends AbstractRepository implements BuildingRepositor
 {
     public function findById(string $id): Building
     {
-        $result = $this->pdo->query("SELECT * FROM buildings WHERE id = '$id' LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT b.id as bid, b.square,bc.count,c.name,c.id as cid FROM buildings as b
+                LEFT JOIN building_category bc on b.id = bc.building_id
+                LEFT JOIN categories c on c.id = bc.category_id
+                WHERE b.id = '$id'";
+        $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
-        $areaCollection = new AreaCollection();
-        $buildingImageCollection = new BuildingImageCollection();
-        $buildingCategoryCollection = new BuildingCategoryCollection();
+        $buildingCollection = $this->getBuildingCollection($results);
 
-        return new Building(
-            $areaCollection,
-            $buildingImageCollection,
-            $buildingCategoryCollection,
-            $result['id'],
-            $result['square']
-        );
+        return $buildingCollection->first();
     }
 
     public function deleteById(string $id): void
@@ -44,22 +41,12 @@ class BuildingRepository extends AbstractRepository implements BuildingRepositor
 
     public function getList(): BuildingCollection
     {
-        $sql = "SELECT * FROM buildings";
+        $sql = "SELECT b.id as bid, b.square,bc.count,c.name,c.id as cid FROM buildings as b
+                LEFT JOIN building_category bc on b.id = bc.building_id
+                LEFT JOIN categories c on c.id = bc.category_id";
         $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        $buildingCollection = new BuildingCollection();
 
-        foreach ($results as $result) {
-            $building = new Building(
-                new AreaCollection(),
-                new BuildingImageCollection(),
-                new BuildingCategoryCollection(),
-                $result['id'],
-                $result['square']
-            );
-            $buildingCollection->add($building);
-        }
-
-        return $buildingCollection;
+        return $this->getBuildingCollection($results);
     }
 
     public function update(Building $building): void
@@ -68,5 +55,48 @@ class BuildingRepository extends AbstractRepository implements BuildingRepositor
         $square = $building->getSquare();
 
         $this->pdo->query("UPDATE buildings SET square = '$square' WHERE id = '$id'");
+    }
+
+    private function getBuildingCollection(array $results): BuildingCollection
+    {
+        $buildingCollection = new BuildingCollection();
+
+        $data = [];
+        foreach ($results as $result) {
+            $categories[$result['bid']][] = [
+                'id' => $result['cid'],
+                'name' => $result['name'],
+                'count' => $result['count'],
+            ];
+
+            $data[$result['bid']] = [
+                'id' => $result['bid'],
+                'square' => $result['square'],
+                'categories' => $categories[$result['bid']]
+            ];
+        }
+
+        foreach ($data as $result) {
+            $buildingCategoryCollection = new BuildingCategoryCollection();
+            foreach ($result['categories'] as $cat) {
+                $category = new Category(
+                    $cat['id'],
+                    $cat['name'],
+                    $cat['count']
+                );
+                $buildingCategoryCollection->add($category);
+            }
+
+            $building = new Building(
+                new AreaCollection(),
+                new BuildingImageCollection(),
+                $buildingCategoryCollection,
+                $result['id'],
+                $result['square']
+            );
+            $buildingCollection->add($building);
+        }
+
+        return $buildingCollection;
     }
 }

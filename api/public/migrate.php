@@ -63,3 +63,29 @@ print("Created categories Table.\n");
 
 $pdo->query("INSERT INTO categories (id,name) VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11','Wi-Fi')");
 $pdo->query("INSERT INTO categories (id,name) VALUES('a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12','Кабельное TV')");
+
+$sql = "CREATE TABLE IF NOT EXISTS building_category (
+        id UUID PRIMARY KEY,
+        count INTEGER NOT NULL,
+        building_id UUID,
+        category_id UUID
+    )";
+$pdo->exec($sql);
+print("Created building_category Table.\n");
+
+$sql = "ALTER TABLE building_category 
+    ADD CONSTRAINT fk_building_category_buildings
+    FOREIGN KEY (building_id) 
+    REFERENCES buildings (id);";
+$pdo->exec($sql);
+print("Created fk_building_category_buildings.\n");
+
+$sql = "ALTER TABLE building_category 
+    ADD CONSTRAINT fk_building_category_categories
+    FOREIGN KEY (category_id) 
+    REFERENCES categories (id);";
+$pdo->exec($sql);
+print("Created fk_building_category_categories.\n");
+
+$pdo->query("INSERT INTO building_category (id,count,building_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a11',1,'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
+$pdo->query("INSERT INTO building_category (id,count,building_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a12',2,'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");

@@ -7,6 +7,7 @@ use App\Model\Building\Building;
 use App\Model\Building\BuildingCategoryCollection;
 use App\Model\Building\BuildingCollection;
 use App\Model\Building\BuildingImageCollection;
+use App\Model\Category\Category;
 use App\Repository\Building\BuildingRepositoryInterface;
 
 class BuildingService
@@ -23,6 +24,7 @@ class BuildingService
         $areaCollection = new AreaCollection();
         $buildingImageCollection = new BuildingImageCollection();
         $buildingCategoryCollection = new BuildingCategoryCollection();
+
         $id = $this->buildingRepository->nextIdentity();
 
         $building = new Building(

@@ -2,6 +2,7 @@
 
 use App\Container;
 use App\Controller\AreaController;
+use App\Controller\BuildingCategoryController;
 use App\Controller\BuildingController;
 use App\Controller\CategoryController;
 use App\Controller\RoomController;
@@ -12,6 +13,20 @@ require __DIR__ . '/../vendor/autoload.php';
 $request = new Request($_SERVER, $_REQUEST, $_GET, $_POST);
 $container = new Container();
 
+if ($request->compareUrl('/api/v1/admin/building/category/join') && $request->isPost()) {
+    $buildingId = (string)$request->post('building_id');
+    $categories = (array)$request->post('categories');
+    /*$buildingId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+    $categories = [[
+        'id' => 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11',
+        'count' => 2
+    ]];*/
+
+    /** @var BuildingCategoryController $buildingCategoryController */
+    $buildingCategoryController = $container->get(BuildingCategoryController::class);
+
+    $buildingCategoryController->join($categories, $buildingId);
+}
 if ($request->compareUrl('/api/v1/admin/building/create') && $request->isPost()) {
     $square = (float)$request->post('square');
 
@@ -142,7 +157,7 @@ if ($request->compareUrl('/api/v1/admin/room/list') && $request->isGet()) {
 
 
 if ($request->compareUrl('/api/v1/admin/category/create') && $request->isPost()) {
-    $name = (string)$request->post('square');
+    $name = (string)$request->post('name');
 
     /** @var CategoryController $categoryController */
     $categoryController = $container->get(CategoryController::class);

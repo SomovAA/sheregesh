@@ -6,7 +6,10 @@ use App\Repository\Area\AreaRepository;
 use App\Repository\Area\AreaRepositoryInterface;
 use App\Repository\Building\BuildingRepository;
 use App\Repository\Building\BuildingRepositoryInterface;
+use App\Repository\BuildingCategory\BuildingCategoryRepository;
+use App\Repository\BuildingCategory\BuildingCategoryRepositoryInterface;
 use App\Repository\Category\CategoryRepository;
+use App\Repository\Category\CategoryRepositoryInterface;
 use App\Repository\Room\RoomRepository;
 use App\Repository\Room\RoomRepositoryInterface;
 use PDO;
@@ -38,7 +41,8 @@ class Container
             BuildingRepositoryInterface::class => fn() => $this->get(BuildingRepository::class),
             AreaRepositoryInterface::class => fn() => $this->get(AreaRepository::class),
             RoomRepositoryInterface::class => fn() => $this->get(RoomRepository::class),
-            CategoryRepository::class => fn() => $this->get(CategoryRepository::class)
+            CategoryRepositoryInterface::class => fn() => $this->get(CategoryRepository::class),
+            BuildingCategoryRepositoryInterface::class => fn() => $this->get(BuildingCategoryRepository::class)
         ];
     }
 
