@@ -117,3 +117,29 @@ $pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0
 $pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a14',2,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a13','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");
 $pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a15',1,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a12','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
 $pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a16',2,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a12','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");
+
+$sql = "CREATE TABLE IF NOT EXISTS room_category (
+        id UUID PRIMARY KEY,
+        count INTEGER NOT NULL,
+        room_id UUID,
+        category_id UUID
+    )";
+$pdo->exec($sql);
+print("Created room_category Table.\n");
+
+$sql = "ALTER TABLE room_category 
+    ADD CONSTRAINT fk_room_category_rooms
+    FOREIGN KEY (room_id) 
+    REFERENCES rooms (id);";
+$pdo->exec($sql);
+print("Created fk_room_category_rooms.\n");
+
+$sql = "ALTER TABLE room_category 
+    ADD CONSTRAINT fk_room_category_categories
+    FOREIGN KEY (category_id) 
+    REFERENCES categories (id);";
+$pdo->exec($sql);
+print("Created fk_room_category_categories.\n");
+
+$pdo->query("INSERT INTO room_category (id,count,room_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a17',1,'a0eebc99-9c0b-4ef8-bb6d-8bb9bd380a15','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
+$pdo->query("INSERT INTO room_category (id,count,room_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a18',2,'a0eebc99-9c0b-4ef8-bb6d-8bb9bd380a15','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");

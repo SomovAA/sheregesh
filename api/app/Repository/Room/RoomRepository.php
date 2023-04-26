@@ -2,6 +2,7 @@
 
 namespace App\Repository\Room;
 
+use App\Model\Category\Category;
 use App\Model\Room\Room;
 use App\Model\Room\RoomCategoryCollection;
 use App\Model\Room\RoomCollection;
@@ -13,18 +14,16 @@ class RoomRepository extends AbstractRepository implements RoomRepositoryInterfa
 {
     public function findById(string $id): Room
     {
-        $result = $this->pdo->query("SELECT * FROM rooms WHERE id = '$id' LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT r.id as rid, r.square, r.area_id, rc.count,c.name,c.id as cid FROM rooms as r
+                LEFT JOIN room_category rc on r.id = rc.room_id
+                LEFT JOIN categories c on c.id = rc.category_id
+                WHERE r.id = '$id'";
 
-        $roomImageCollection = new RoomImageCollection();
-        $roomCategoryCollection = new RoomCategoryCollection();
+        $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
-        return new Room(
-            $roomImageCollection,
-            $roomCategoryCollection,
-            $result['id'],
-            $result['square'],
-            $result['area_id']
-        );
+        $roomCollection = $this->getRoomCollection($results);
+
+        return $roomCollection->first();
     }
 
     public function deleteById(string $id): void
@@ -43,22 +42,13 @@ class RoomRepository extends AbstractRepository implements RoomRepositoryInterfa
 
     public function getListByAreaId(string $areaId): RoomCollection
     {
-        $sql = "SELECT * FROM rooms WHERE area_id = '$areaId'";
+        $sql = "SELECT r.id as rid, r.square, r.area_id, rc.count,c.name,c.id as cid FROM rooms as r
+                LEFT JOIN room_category rc on r.id = rc.room_id
+                LEFT JOIN categories c on c.id = rc.category_id
+                WHERE r.area_id = '$areaId'";
         $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        $roomCollection = new RoomCollection();
 
-        foreach ($results as $result) {
-            $room = new Room(
-                new RoomImageCollection(),
-                new RoomCategoryCollection(),
-                $result['id'],
-                $result['square'],
-                $result['area_id'],
-            );
-            $roomCollection->add($room);
-        }
-
-        return $roomCollection;
+        return $this->getRoomCollection($results);
     }
 
     public function update(Room $room): void
@@ -67,5 +57,55 @@ class RoomRepository extends AbstractRepository implements RoomRepositoryInterfa
         $square = $room->getSquare();
 
         $this->pdo->query("UPDATE rooms SET square = '$square' WHERE id = '$id'");
+    }
+
+    private function getRoomCollection(array $results): RoomCollection
+    {
+        $data = [];
+        $categories = [];
+        foreach ($results as $result) {
+            $data[$result['rid']] = [
+                'id' => $result['rid'],
+                'square' => $result['square'],
+                'area_id' => $result['area_id'],
+            ];
+
+            if (isset($result['cid'])) {
+                $categories[$result['rid']][] = [
+                    'id' => $result['cid'],
+                    'name' => $result['name'],
+                    'count' => $result['count'],
+                ];
+
+                $data[$result['rid']]['categories'] = $categories[$result['rid']];
+            }
+        }
+
+        $roomCollection = new RoomCollection();
+
+        foreach ($data as $result) {
+            $roomCategoryCollection = new RoomCategoryCollection();
+            if (isset($result['categories'])) {
+                foreach ($result['categories'] as $cat) {
+                    $category = new Category(
+                        $cat['id'],
+                        $cat['name'],
+                        $cat['count']
+                    );
+                    $roomCategoryCollection->add($category);
+                }
+            }
+
+            $room = new Room(
+                new RoomImageCollection(),
+                $roomCategoryCollection,
+                $result['id'],
+                $result['square'],
+                $result['area_id'],
+            );
+            $roomCollection->add($room);
+        }
+
+        return $roomCollection;
     }
 }

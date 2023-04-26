@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Category\Category;
 use App\Model\Room\Room;
 use App\Service\RoomService;
 
@@ -30,13 +31,9 @@ class RoomController extends AbstractController
 
     public function view(string $id): void
     {
-        $area = $this->roomService->view($id);
+        $room = $this->roomService->view($id);
 
-        $data = [
-            'id' => $area->getId(),
-            'square' => $area->getSquare(),
-            'area_id' => $area->getAreaId()
-        ];
+        $data = $this->getRoom($room);
 
         $this->displayJson($data);
     }
@@ -55,12 +52,29 @@ class RoomController extends AbstractController
         $data = [];
         /** @var Room $room */
         foreach ($roomCollection->toArray() as $room) {
-            $data[] = [
-                'id' => $room->getId(),
-                'square' => $room->getSquare()
-            ];
+            $data[] = $this->getRoom($room);
         }
 
         $this->displayJson($data);
+    }
+
+    private function getRoom(Room $room): array
+    {
+        $categories = [];
+        /** @var Category $category */
+        foreach ($room->getCategories()->toArray() as $category) {
+            $categories[] = [
+                'id' => $category->getId(),
+                'name' => $category->getName(),
+                'count' => $category->getCount(),
+            ];
+        }
+
+        return [
+            'id' => $room->getId(),
+            'square' => $room->getSquare(),
+            'area_id' => $room->getAreaId(),
+            'categories' => $categories
+        ];
     }
 }

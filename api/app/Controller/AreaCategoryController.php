@@ -12,9 +12,9 @@ class AreaCategoryController extends AbstractController
         $this->areaCategoryService = $areaCategoryService;
     }
 
-    public function join(array $categories, string $buildingId): void
+    public function join(array $categories, string $areaId): void
     {
-        $this->areaCategoryService->join($categories, $buildingId);
+        $this->areaCategoryService->join($categories, $areaId);
 
         $this->displayJson();
     }

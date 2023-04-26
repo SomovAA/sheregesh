@@ -21,14 +21,14 @@ class AreaCategoryService
         foreach ($categories as $data) {
             $id = $this->areaCategoryRepository->nextIdentity();
 
-            $buildingCategory = new AreaCategory(
+            $areaCategory = new AreaCategory(
                 $id,
                 $data['count'],
                 $areaId,
                 $data['id']
             );
 
-            $this->areaCategoryRepository->create($buildingCategory);
+            $this->areaCategoryRepository->create($areaCategory);
         }
     }
 }

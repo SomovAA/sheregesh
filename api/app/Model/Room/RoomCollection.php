@@ -10,4 +10,10 @@ class RoomCollection extends Collection
     {
         $this->data[] = $room;
     }
+
+    public function first(): Room
+    {
+        // ToDo: изменить через функцию, а не через 0
+        return $this->data[0];
+    }
 }

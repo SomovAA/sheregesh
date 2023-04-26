@@ -6,6 +6,7 @@ use App\Controller\AreaController;
 use App\Controller\BuildingCategoryController;
 use App\Controller\BuildingController;
 use App\Controller\CategoryController;
+use App\Controller\RoomCategoryController;
 use App\Controller\RoomController;
 use App\Request;
 
@@ -127,6 +128,20 @@ if ($request->compareUrl('/api/v1/admin/area/list') && $request->isGet()) {
 }
 
 
+if ($request->compareUrl('/api/v1/admin/room/category/join') && $request->isPost()) {
+    $roomId = (string)$request->post('room_id');
+    $categories = (array)$request->post('categories');
+    /*$roomId = 'a0eebc99-9c0b-4ef8-bb6d-8bb9bd380a16';
+    $categories = [[
+        'id' => 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11',
+        'count' => 2
+    ]];*/
+
+    /** @var RoomCategoryController $roomCategoryController */
+    $roomCategoryController = $container->get(RoomCategoryController::class);
+
+    $roomCategoryController->join($categories, $roomId);
+}
 if ($request->compareUrl('/api/v1/admin/room/create') && $request->isPost()) {
     $areaId = (string)$request->post('area_id');
     $square = (float)$request->post('square');

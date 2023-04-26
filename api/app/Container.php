@@ -14,6 +14,8 @@ use App\Repository\Category\CategoryRepository;
 use App\Repository\Category\CategoryRepositoryInterface;
 use App\Repository\Room\RoomRepository;
 use App\Repository\Room\RoomRepositoryInterface;
+use App\Repository\RoomCategory\RoomCategoryRepository;
+use App\Repository\RoomCategory\RoomCategoryRepositoryInterface;
 use PDO;
 use PDOException;
 use ReflectionClass;
@@ -45,7 +47,8 @@ class Container
             RoomRepositoryInterface::class => fn() => $this->get(RoomRepository::class),
             CategoryRepositoryInterface::class => fn() => $this->get(CategoryRepository::class),
             BuildingCategoryRepositoryInterface::class => fn() => $this->get(BuildingCategoryRepository::class),
-            AreaCategoryRepositoryInterface::class => fn() => $this->get(AreaCategoryRepository::class)
+            AreaCategoryRepositoryInterface::class => fn() => $this->get(AreaCategoryRepository::class),
+            RoomCategoryRepositoryInterface::class => fn() => $this->get(RoomCategoryRepository::class)
         ];
     }
 

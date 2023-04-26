@@ -15,7 +15,7 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
 {
     public function findById(string $id): Area
     {
-        $sql = "SELECT a.id as aid, a.square,ac.count,c.name,c.id as cid FROM areas as a
+        $sql = "SELECT a.id as aid, a.square, a.building_id, ac.count,c.name,c.id as cid FROM areas as a
                 LEFT JOIN area_category ac on a.id = ac.area_id
                 LEFT JOIN categories c on c.id = ac.category_id
                 WHERE a.id = '$id'";
@@ -62,8 +62,6 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
 
     private function getAreaCollection(array $results): AreaCollection
     {
-        $areaCollection = new AreaCollection();
-
         $data = [];
         $categories = [];
         foreach ($results as $result) {
@@ -84,6 +82,8 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
             }
         }
 
+        $areaCollection = new AreaCollection();
+
         foreach ($data as $result) {
             $areaCategoryCollection = new AreaCategoryCollection();
             if (isset($result['categories'])) {
@@ -97,7 +97,7 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
                 }
             }
 
-            $building = new Area(
+            $area = new Area(
                 new RoomCollection(),
                 new AreaImageCollection(),
                 $areaCategoryCollection,
@@ -105,7 +105,7 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
                 $result['square'],
                 $result['building_id'],
             );
-            $areaCollection->add($building);
+            $areaCollection->add($area);
         }
 
         return $areaCollection;
