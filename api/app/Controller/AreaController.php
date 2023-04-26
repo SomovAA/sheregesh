@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Area\Area;
+use App\Model\Category\Category;
 use App\Service\AreaService;
 
 class AreaController extends AbstractController
@@ -30,11 +31,7 @@ class AreaController extends AbstractController
     {
         $area = $this->areaService->view($id);
 
-        $data = [
-            'id' => $area->getId(),
-            'square' => $area->getSquare(),
-            'building_id' => $area->getBuildingId()
-        ];
+        $data = $this->getArea($area);
 
         $this->displayJson($data);
     }
@@ -53,12 +50,29 @@ class AreaController extends AbstractController
         $data = [];
         /** @var Area $area */
         foreach ($areaCollection->toArray() as $area) {
-            $data[] = [
-                'id' => $area->getId(),
-                'square' => $area->getSquare()
-            ];
+            $data[] = $this->getArea($area);
         }
 
         $this->displayJson($data);
+    }
+
+    private function getArea(Area $area): array
+    {
+        $categories = [];
+        /** @var Category $category */
+        foreach ($area->getCategories()->toArray() as $category) {
+            $categories[] = [
+                'id' => $category->getId(),
+                'name' => $category->getName(),
+                'count' => $category->getCount(),
+            ];
+        }
+
+        return [
+            'id' => $area->getId(),
+            'square' => $area->getSquare(),
+            'building_id' => $area->getBuildingId(),
+            'categories' => $categories
+        ];
     }
 }

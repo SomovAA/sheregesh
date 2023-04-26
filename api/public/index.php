@@ -1,6 +1,7 @@
 <?php
 
 use App\Container;
+use App\Controller\AreaCategoryController;
 use App\Controller\AreaController;
 use App\Controller\BuildingCategoryController;
 use App\Controller\BuildingController;
@@ -68,6 +69,20 @@ if ($request->compareUrl('/api/v1/admin/building/list') && $request->isGet()) {
 }
 
 
+if ($request->compareUrl('/api/v1/admin/area/category/join') && $request->isPost()) {
+    $areaId = (string)$request->post('area_id');
+    $categories = (array)$request->post('categories');
+    /*$areaId = 'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a13';
+    $categories = [[
+        'id' => 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11',
+        'count' => 2
+    ]];*/
+
+    /** @var AreaCategoryController $areaCategoryController */
+    $areaCategoryController = $container->get(AreaCategoryController::class);
+
+    $areaCategoryController->join($categories, $areaId);
+}
 if ($request->compareUrl('/api/v1/admin/area/create') && $request->isPost()) {
     $buildingId = (string)$request->post('building_id');
     $square = (float)$request->post('square');

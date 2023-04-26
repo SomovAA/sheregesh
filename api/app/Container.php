@@ -4,6 +4,8 @@ namespace App;
 
 use App\Repository\Area\AreaRepository;
 use App\Repository\Area\AreaRepositoryInterface;
+use App\Repository\AreaCategory\AreaCategoryRepository;
+use App\Repository\AreaCategory\AreaCategoryRepositoryInterface;
 use App\Repository\Building\BuildingRepository;
 use App\Repository\Building\BuildingRepositoryInterface;
 use App\Repository\BuildingCategory\BuildingCategoryRepository;
@@ -42,7 +44,8 @@ class Container
             AreaRepositoryInterface::class => fn() => $this->get(AreaRepository::class),
             RoomRepositoryInterface::class => fn() => $this->get(RoomRepository::class),
             CategoryRepositoryInterface::class => fn() => $this->get(CategoryRepository::class),
-            BuildingCategoryRepositoryInterface::class => fn() => $this->get(BuildingCategoryRepository::class)
+            BuildingCategoryRepositoryInterface::class => fn() => $this->get(BuildingCategoryRepository::class),
+            AreaCategoryRepositoryInterface::class => fn() => $this->get(AreaCategoryRepository::class)
         ];
     }
 

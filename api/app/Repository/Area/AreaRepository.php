@@ -6,6 +6,7 @@ use App\Model\Area\Area;
 use App\Model\Area\AreaCategoryCollection;
 use App\Model\Area\AreaCollection;
 use App\Model\Area\AreaImageCollection;
+use App\Model\Category\Category;
 use App\Model\Room\RoomCollection;
 use App\Repository\AbstractRepository;
 use PDO;
@@ -14,21 +15,18 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
 {
     public function findById(string $id): Area
     {
-        $result = $this->pdo->query("SELECT * FROM areas WHERE id = '$id' LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT a.id as aid, a.square,ac.count,c.name,c.id as cid FROM areas as a
+                LEFT JOIN area_category ac on a.id = ac.area_id
+                LEFT JOIN categories c on c.id = ac.category_id
+                WHERE a.id = '$id'";
 
-        $roomCollection = new RoomCollection();
-        $areaImageCollection = new AreaImageCollection();
-        $areaCategoryCollection = new AreaCategoryCollection();
+        $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
-        return new Area(
-            $roomCollection,
-            $areaImageCollection,
-            $areaCategoryCollection,
-            $result['id'],
-            $result['square'],
-            $result['building_id']
-        );
+        $areaCollection = $this->getAreaCollection($results);
+
+        return $areaCollection->first();
     }
+
     public function deleteById(string $id): void
     {
         $this->pdo->query("DELETE FROM areas WHERE id = '$id'");
@@ -45,23 +43,13 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
 
     public function getList(string $buildingId): AreaCollection
     {
-        $sql = "SELECT * FROM areas WHERE building_id = '$buildingId'";
+        $sql = "SELECT a.id as aid, a.square, a.building_id,ac.count,c.name,c.id as cid FROM areas as a
+                LEFT JOIN area_category ac on a.id = ac.area_id
+                LEFT JOIN categories c on c.id = ac.category_id
+                WHERE a.building_id = '$buildingId'";
         $results = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        $areaCollection = new AreaCollection();
 
-        foreach ($results as $result) {
-            $area = new Area(
-                new RoomCollection(),
-                new AreaImageCollection(),
-                new AreaCategoryCollection(),
-                $result['id'],
-                $result['square'],
-                $result['building_id'],
-            );
-            $areaCollection->add($area);
-        }
-
-        return $areaCollection;
+        return $this->getAreaCollection($results);
     }
 
     public function update(Area $area): void
@@ -70,5 +58,56 @@ class AreaRepository extends AbstractRepository implements AreaRepositoryInterfa
         $square = $area->getSquare();
 
         $this->pdo->query("UPDATE areas SET square = '$square' WHERE id = '$id'");
+    }
+
+    private function getAreaCollection(array $results): AreaCollection
+    {
+        $areaCollection = new AreaCollection();
+
+        $data = [];
+        $categories = [];
+        foreach ($results as $result) {
+            $data[$result['aid']] = [
+                'id' => $result['aid'],
+                'square' => $result['square'],
+                'building_id' => $result['building_id'],
+            ];
+
+            if (isset($result['cid'])) {
+                $categories[$result['aid']][] = [
+                    'id' => $result['cid'],
+                    'name' => $result['name'],
+                    'count' => $result['count'],
+                ];
+
+                $data[$result['aid']]['categories'] = $categories[$result['aid']];
+            }
+        }
+
+        foreach ($data as $result) {
+            $areaCategoryCollection = new AreaCategoryCollection();
+            if (isset($result['categories'])) {
+                foreach ($result['categories'] as $cat) {
+                    $category = new Category(
+                        $cat['id'],
+                        $cat['name'],
+                        $cat['count']
+                    );
+                    $areaCategoryCollection->add($category);
+                }
+            }
+
+            $building = new Area(
+                new RoomCollection(),
+                new AreaImageCollection(),
+                $areaCategoryCollection,
+                $result['id'],
+                $result['square'],
+                $result['building_id'],
+            );
+            $areaCollection->add($building);
+        }
+
+        return $areaCollection;
     }
 }

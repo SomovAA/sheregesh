@@ -89,3 +89,31 @@ print("Created fk_building_category_categories.\n");
 
 $pdo->query("INSERT INTO building_category (id,count,building_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a11',1,'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
 $pdo->query("INSERT INTO building_category (id,count,building_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a12',2,'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");
+
+$sql = "CREATE TABLE IF NOT EXISTS area_category (
+        id UUID PRIMARY KEY,
+        count INTEGER NOT NULL,
+        area_id UUID,
+        category_id UUID
+    )";
+$pdo->exec($sql);
+print("Created area_category Table.\n");
+
+$sql = "ALTER TABLE area_category 
+    ADD CONSTRAINT fk_area_category_areas
+    FOREIGN KEY (area_id) 
+    REFERENCES areas (id);";
+$pdo->exec($sql);
+print("Created fk_area_category_areas.\n");
+
+$sql = "ALTER TABLE area_category 
+    ADD CONSTRAINT fk_area_category_categories
+    FOREIGN KEY (category_id) 
+    REFERENCES categories (id);";
+$pdo->exec($sql);
+print("Created fk_area_category_categories.\n");
+
+$pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a13',1,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a13','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
+$pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a14',2,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a13','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");
+$pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a15',1,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a12','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a11')");
+$pdo->query("INSERT INTO area_category (id,count,area_id,category_id) VALUES('a0eebc99-9c0b-4ef8-bb6d-7bb9bd480a16',2,'a0eebc99-9c0b-4ef8-bb6d-7bb9bd380a12','a0eebc99-9c0b-4ef8-bb6d-6bb9bd480a12')");

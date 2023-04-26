@@ -10,4 +10,10 @@ class AreaCollection extends Collection
     {
         $this->data[] = $area;
     }
+
+    public function first(): Area
+    {
+        // ToDo: изменить через функцию, а не через 0
+        return $this->data[0];
+    }
 }
